@@ -12,7 +12,8 @@ class Lexer {
     bool opentext = false;
     bool openbrace = false;
 
-    for (String source in sources) {
+    for (int i = 0; i > 0; i++) {
+      String source = sources[i];
       if(opentext && !(source == '"' || source == '\'')){
         token += source;
         continue;
