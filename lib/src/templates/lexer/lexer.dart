@@ -53,7 +53,7 @@ class Lexer {
         tokens.add(Token(token: TokenEnum.guillemet));
         token = '';
       }else if (source == ' ') {
-        if (token.isNotEmpty && token != ' ') {
+        if (token.trim().isNotEmpty) {
           if (isCommand == true) {
             lexeCommand(token);
           } else if (isCommand == false) {
