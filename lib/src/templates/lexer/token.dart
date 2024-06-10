@@ -1,4 +1,4 @@
-enum TokenEnum{
+enum TokenEnum {
   openVariableBalise,
   closeVariableBalise,
   openCommandBalise,
@@ -12,10 +12,12 @@ enum TokenEnum{
   endIfCommand,
   separator,
   content,
-  operator
+  operator,
+  intValue,
+  stringValue
 }
 
-class Token{
+class Token {
   TokenEnum token;
   String? value;
 

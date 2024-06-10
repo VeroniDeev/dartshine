@@ -72,6 +72,8 @@ class Lexer {
       tokens.add(Token(token: TokenEnum.operator, value: token));
     } else if (token == '>=') {
       tokens.add(Token(token: TokenEnum.operator, value: token));
+    } else if (int.tryParse(token) != null) {
+      tokens.add(Token(token: TokenEnum.intValue, value: token));
     } else {
       tokens.add(Token(token: TokenEnum.variableName, value: token));
     }
