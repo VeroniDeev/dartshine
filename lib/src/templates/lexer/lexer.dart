@@ -9,8 +9,20 @@ class Lexer {
   void lexer() {
     String token = '';
     bool? isCommand;
+    bool openbrace = false;
 
     for (String source in sources) {
+      if(openbrace && !(source == '"' || source == '\'')){
+        token += source;
+        continue;
+      }else if(openbrace && (source == '"' || source == '\'')){
+        tokens.add(Token(token: TokenEnum.stringValue, value: token));
+        tokens.add(Token(token: TokenEnum.guillemet));
+        openbrace = false;
+        token = '';
+        continue;
+      }
+
       if (source != ' ') {
         token += source;
       }
@@ -36,7 +48,11 @@ class Lexer {
       } else if (token == '\$>') {
         token = '';
         tokens.add(Token(token: TokenEnum.closeVariableBalise));
-      } else if (source == ' ') {
+      } else if(token == '"' || token == '\''){
+        openbrace = true;
+        tokens.add(Token(token: TokenEnum.guillemet));
+        token = '';
+      }else if (source == ' ') {
         if (token.isNotEmpty && token != ' ') {
           if (isCommand == true) {
             lexeCommand(token);
