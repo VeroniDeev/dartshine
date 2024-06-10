@@ -11,7 +11,8 @@ enum TokenEnum{
   elseCommand,
   endIfCommand,
   separator,
-  content
+  content,
+  operator
 }
 
 class Token{

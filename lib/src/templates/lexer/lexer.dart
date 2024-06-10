@@ -58,6 +58,20 @@ class Lexer {
       tokens.add(Token(token: TokenEnum.elseCommand));
     } else if (token == 'in') {
       tokens.add(Token(token: TokenEnum.inCommand));
+    } else if (token == '==') {
+      tokens.add(Token(token: TokenEnum.operator, value: token));
+    } else if (token == '!=') {
+      tokens.add(Token(token: TokenEnum.operator, value: token));
+    } else if (token == '&&') {
+      tokens.add(Token(token: TokenEnum.operator, value: token));
+    } else if (token == '>') {
+      tokens.add(Token(token: TokenEnum.operator, value: token));
+    } else if (token == '<') {
+      tokens.add(Token(token: TokenEnum.operator, value: token));
+    } else if (token == '<=') {
+      tokens.add(Token(token: TokenEnum.operator, value: token));
+    } else if (token == '>=') {
+      tokens.add(Token(token: TokenEnum.operator, value: token));
     } else {
       tokens.add(Token(token: TokenEnum.variableName, value: token));
     }
