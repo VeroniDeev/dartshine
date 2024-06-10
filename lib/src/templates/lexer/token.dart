@@ -10,12 +10,13 @@ enum TokenEnum {
   ifCommand,
   elseCommand,
   endIfCommand,
-  separator,
   content,
   operator,
   intValue,
   guillemet,
-  stringValue
+  stringValue,
+  openBrace,
+  closeBrace
 }
 
 class Token {
