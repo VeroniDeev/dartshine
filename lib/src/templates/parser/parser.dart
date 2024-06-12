@@ -6,6 +6,7 @@ class Parser {
   List<Token> tokens;
   int index = 0;
   bool error = false;
+  bool leaveCommand = false;
 
   Parser({required this.tokens});
 
@@ -102,6 +103,9 @@ class Parser {
     }
 
     while (true) {
+      if (leaveCommand) {
+        break;
+      }
       index++;
       token = tokens[index];
 
@@ -110,6 +114,7 @@ class Parser {
       } else if (token.token == TokenEnum.openCommandBalise &&
           tokens[index + 1].token == TokenEnum.endForCommand) {
         pushNode(node: node, newNode: forNode);
+        leaveCommand = true;
         break;
       } else if (token.token == TokenEnum.openCommandBalise &&
           tokens[index + 1].token != TokenEnum.endForCommand) {
@@ -123,11 +128,10 @@ class Parser {
     }
   }
 
-  void parseCondition({required dynamic node, required bool condition}) {
+  void parseIfCondition(
+      {required dynamic node, required List<Token> tokenList}) {
     index++;
     Token token = tokens[index];
-    ConditionNode conditionNode = ConditionNode();
-    List<Token> tokenList = [];
 
     if (token.token == TokenEnum.variableName) {
       tokenList.add(token);
@@ -146,9 +150,18 @@ class Parser {
     if (token.token == TokenEnum.variableName) {
       tokenList.add(token);
     }
+  }
+
+  void parseCondition({required dynamic node, required bool condition}) {
+    ConditionNode conditionNode = ConditionNode();
+    List<Token> tokenList = [];
+
+    if (condition) {
+      parseIfCondition(node: node, tokenList: tokenList);
+    }
 
     index++;
-    token = tokens[index];
+    Token token = tokens[index];
 
     if (token.token != TokenEnum.closeCommandBalise) {
       error = true;
@@ -158,13 +171,19 @@ class Parser {
     conditionNode.addCondition(tokenList);
 
     while (true) {
+      if (leaveCommand) {
+        break;
+      }
+
       index++;
       token = tokens[index];
 
       if (token.token == TokenEnum.openBrace) {
         parseContent(node: conditionNode, condition: condition);
       } else if (token.token == TokenEnum.openCommandBalise &&
-          tokens[index + 1].token == TokenEnum.endIfCommand) {
+          tokens[index + 1].token == TokenEnum.endIfCommand &&
+          tokens[index + 2].token == TokenEnum.closeCommandBalise) {
+        leaveCommand = true;
         break;
       } else if (token.token == TokenEnum.openCommandBalise) {
         parseCommand(node: conditionNode);
