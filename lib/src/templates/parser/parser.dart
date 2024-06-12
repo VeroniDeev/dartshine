@@ -114,6 +114,8 @@ class Parser {
       } else if (token.token == TokenEnum.openCommandBalise &&
           tokens[index + 1].token != TokenEnum.endForCommand) {
         parseCommand(node: forNode);
+      } else if (token.token == TokenEnum.openVariableBalise) {
+        parseVariable(node: forNode);
       } else {
         _error = true;
         return;
@@ -164,9 +166,9 @@ class Parser {
       } else if (token.token == TokenEnum.openCommandBalise &&
           tokens[index + 1].token == TokenEnum.endIfCommand) {
         break;
-      }else if(token.token == TokenEnum.openCommandBalise){
+      } else if (token.token == TokenEnum.openCommandBalise) {
         parseCommand(node: conditionNode);
-      }else if(token.token == TokenEnum.openVariableBalise){
+      } else if (token.token == TokenEnum.openVariableBalise) {
         parseVariable(node: conditionNode);
       }
     }
