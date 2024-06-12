@@ -5,7 +5,7 @@ class Parser {
   RootNode node = RootNode();
   List<Token> tokens;
   int index = 0;
-  bool _error = false;
+  bool error = false;
 
   Parser({required this.tokens});
 
@@ -17,7 +17,7 @@ class Parser {
         parseVariable(node: node);
       }
 
-      if (_error) {
+      if (error) {
         return;
       }
 
@@ -34,7 +34,7 @@ class Parser {
       variableNode.addVariableName(token.value!);
       pushNode(node: node, newNode: variableNode);
     } else {
-      _error = true;
+      error = true;
       return;
     }
 
@@ -42,7 +42,7 @@ class Parser {
     token = tokens[index];
 
     if (token.token != TokenEnum.closeVariableBalise) {
-      _error = true;
+      error = true;
     }
     return;
   }
@@ -58,7 +58,7 @@ class Parser {
     } else if (token.token == TokenEnum.elseCommand) {
       parseCondition(node: node, condition: false);
     } else {
-      _error = true;
+      error = true;
       return;
     }
   }
@@ -71,7 +71,7 @@ class Parser {
     if (token.token == TokenEnum.variableName) {
       forNode.addVariableName(token.value!);
     } else {
-      _error = true;
+      error = true;
       return;
     }
 
@@ -79,7 +79,7 @@ class Parser {
     token = tokens[index];
 
     if (token.token != TokenEnum.inCommand) {
-      _error = true;
+      error = true;
       return;
     }
 
@@ -89,7 +89,7 @@ class Parser {
     if (token.token == TokenEnum.variableName) {
       forNode.addCollectionName(token.value!);
     } else {
-      _error = true;
+      error = true;
       return;
     }
 
@@ -97,7 +97,7 @@ class Parser {
     token = tokens[index];
 
     if (token.token != TokenEnum.closeCommandBalise) {
-      _error = true;
+      error = true;
       return;
     }
 
@@ -117,7 +117,7 @@ class Parser {
       } else if (token.token == TokenEnum.openVariableBalise) {
         parseVariable(node: forNode);
       } else {
-        _error = true;
+        error = true;
         return;
       }
     }
@@ -151,7 +151,7 @@ class Parser {
     token = tokens[index];
 
     if (token.token != TokenEnum.closeCommandBalise) {
-      _error = true;
+      error = true;
       return;
     }
 
@@ -188,7 +188,7 @@ class Parser {
       } else if (token.token == TokenEnum.closeBrace) {
         break;
       } else {
-        _error = true;
+        error = true;
         return;
       }
     }
