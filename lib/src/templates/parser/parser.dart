@@ -34,8 +34,6 @@ class Parser {
 
     if (token.token == TokenEnum.ifCommand) {
       parseCondition(node: node, condition: true);
-    } else if (token.token == TokenEnum.elseCommand) {
-      parseCondition(node: node, condition: false);
     } else if (token.token == TokenEnum.forCommand) {
       parseFor(node: node);
     } else {
@@ -68,7 +66,7 @@ class Parser {
     node.add(result);
   }
 
-  void parseIfCondition({required List<Map<String, dynamic>> node}) {
+  void parseIfCondition({required Map<String, dynamic> node}) {
     List<Token> tokenList = [];
 
     while (true) {
@@ -76,7 +74,7 @@ class Parser {
       Token token = tokens[index];
 
       if (token.token == TokenEnum.closeCommandBalise) {
-        node.add({'condition': tokenList});
+        node['condition'] = tokenList;
         break;
       } else if (token.token == TokenEnum.variableName ||
           token.token == TokenEnum.operator ||
@@ -91,11 +89,12 @@ class Parser {
   }
 
   void parseCondition(
-      {required List<Map<String, dynamic>> node, required bool condition}) {
+      {required List<Map<String, dynamic>> node, required bool condition, Map<String, dynamic>? elseNode}) {
     Token token = tokens[index];
+    Map<String, dynamic> result = {'type': 'condition'};
 
     if (condition) {
-      parseIfCondition(node: node);
+      parseIfCondition(node: result);
 
       if (error) {
         return;
@@ -124,7 +123,7 @@ class Parser {
           tokens[index + 1].token == TokenEnum.elseCommand &&
           tokens[index + 2].token == TokenEnum.closeCommandBalise) {
         index++;
-        parseCondition(node: node, condition: false);
+        parseCondition(node: node, condition: false, elseNode: result);
         break;
       } else if (token.token == TokenEnum.openVariableBalise) {
         parseVariable(node: children);
@@ -148,9 +147,10 @@ class Parser {
     }
 
     if (condition) {
-      node.add({'type': 'condition', 'trueCondition': children});
+      result['trueCondition'] = children;
+      node.add(result);
     } else {
-      node.add({'type': 'condition', 'falseCondition': children});
+      elseNode!['falseCondition'] = children;
     }
   }
 
