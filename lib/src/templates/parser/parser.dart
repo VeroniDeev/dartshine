@@ -11,10 +11,17 @@ class Parser {
   void parser() {
     while (index < tokens.length) {
       Token token = tokens[index];
+
       if (token.token == TokenEnum.openCommandBalise) {
         parseCommand(node: results);
       } else if (token.token == TokenEnum.openVariableBalise) {
         parseVariable(node: results);
+      } else {
+        error = true;
+      }
+
+      if (error) {
+        return;
       }
 
       index++;
@@ -31,6 +38,9 @@ class Parser {
       parseCondition(node: node, condition: false);
     } else if (token.token == TokenEnum.forCommand) {
       parseFor(node: node);
+    } else {
+      error = true;
+      return;
     }
   }
 
@@ -69,7 +79,9 @@ class Parser {
         node.add({'condition': tokenList});
         break;
       } else if (token.token == TokenEnum.variableName ||
-          token.token == TokenEnum.operator) {
+          token.token == TokenEnum.operator ||
+          token.token == TokenEnum.intValue ||
+          token.token == TokenEnum.stringValue) {
         tokenList.add(token);
       } else {
         error = true;
@@ -104,10 +116,14 @@ class Parser {
       token = tokens[index];
 
       if (token.token == TokenEnum.openCommandBalise &&
-          tokens[index + 1].token == TokenEnum.endIfCommand) {
+          tokens[index + 1].token == TokenEnum.endIfCommand &&
+          tokens[index + 2].token == TokenEnum.closeCommandBalise) {
+        index += 2;
         break;
       } else if (token.token == TokenEnum.openCommandBalise &&
-          tokens[index + 1].token == TokenEnum.elseCommand) {
+          tokens[index + 1].token == TokenEnum.elseCommand &&
+          tokens[index + 2].token == TokenEnum.closeCommandBalise) {
+        index++;
         parseCondition(node: node, condition: false);
         break;
       } else if (token.token == TokenEnum.openVariableBalise) {
@@ -121,6 +137,7 @@ class Parser {
         if (token.token == TokenEnum.content &&
             tokens[index + 1].token == TokenEnum.closeBrace) {
           children.add({'type': 'text', 'value': token.value});
+          index++;
         } else {
           error = true;
           return;
@@ -161,42 +178,50 @@ class Parser {
     token = tokens[index];
 
     if (token.token != TokenEnum.variableName ||
-        tokens[index + 1].token != TokenEnum.closeBrace) {
+        tokens[index + 1].token != TokenEnum.closeCommandBalise) {
       error = true;
       return;
     }
 
+    index++;
+
     forCondition['collection'] = token.value!;
 
     List<Map<String, dynamic>> children = [];
-    
+
     while (true) {
       index++;
       token = tokens[index];
 
-      if(token.token == TokenEnum.openCommandBalise && tokens[index + 1].token == TokenEnum.endForCommand){
+      if (token.token == TokenEnum.openCommandBalise &&
+          tokens[index + 1].token == TokenEnum.endForCommand &&
+          tokens[index + 2].token == TokenEnum.closeCommandBalise) {
+        index += 2;
         break;
-      }else if(token.token == TokenEnum.openVariableBalise){
+      } else if (token.token == TokenEnum.openVariableBalise) {
         parseVariable(node: children);
-      }else if (token.token == TokenEnum.openBrace) {
+      } else if (token.token == TokenEnum.openBrace) {
         index++;
         token = tokens[index];
 
         if (token.token == TokenEnum.content &&
             tokens[index + 1].token == TokenEnum.closeBrace) {
           children.add({'type': 'text', 'value': token.value});
+          index++;
         } else {
           error = true;
           return;
         }
-      }else if(token.token == TokenEnum.openCommandBalise){
+      } else if (token.token == TokenEnum.openCommandBalise) {
         parseCommand(node: children);
-      }else{
+      } else {
         error = true;
         return;
       }
     }
 
     forCondition['children'] = children;
+
+    node.add(forCondition);
   }
 }
