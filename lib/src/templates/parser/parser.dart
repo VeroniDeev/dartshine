@@ -25,7 +25,13 @@ class Parser {
     index++;
     Token token = tokens[index];
 
-    if (token.token == TokenEnum.ifCommand) {}
+    if (token.token == TokenEnum.ifCommand) {
+      parseCondition(node: node, condition: true);
+    } else if (token.token == TokenEnum.elseCommand) {
+      parseCondition(node: node, condition: false);
+    } else if (token.token == TokenEnum.forCommand) {
+      parseFor(node: node);
+    }
   }
 
   void parseVariable({required List<Map<String, dynamic>> node}) {
@@ -44,7 +50,7 @@ class Parser {
     index++;
     token = tokens[index];
 
-    if(token.token != TokenEnum.closeVariableBalise){
+    if (token.token != TokenEnum.closeVariableBalise) {
       error = true;
       return;
     }
@@ -52,9 +58,86 @@ class Parser {
     node.add(result);
   }
 
-  void parseCondition({required List<Map<String, dynamic>> node}) {}
+  void parseIfCondition({required List<Map<String, dynamic>> node}) {
+    List<Token> tokenList = [];
 
-  void parseFor() {}
+    while (true) {
+      index++;
+      Token token = tokens[index];
+
+      if (token.token == TokenEnum.closeCommandBalise) {
+        node.add({'condition': tokenList});
+        break;
+      } else if (token.token == TokenEnum.variableName ||
+          token.token == TokenEnum.operator) {
+        tokenList.add(token);
+      } else {
+        error = true;
+        return;
+      }
+    }
+  }
+
+  void parseCondition(
+      {required List<Map<String, dynamic>> node, required bool condition}) {
+    Token token = tokens[index];
+
+    if (condition) {
+      parseIfCondition(node: node);
+
+      if (error) {
+        return;
+      }
+    } else {
+      index++;
+      token = tokens[index];
+
+      if (token.token != TokenEnum.closeCommandBalise) {
+        error = true;
+        return;
+      }
+    }
+
+    List<Map<String, dynamic>> children = [];
+
+    while (true) {
+      token = tokens[index];
+
+      if (token.token == TokenEnum.openCommandBalise &&
+          tokens[index + 1].token == TokenEnum.endIfCommand) {
+        break;
+      } else if (token.token == TokenEnum.openCommandBalise &&
+          tokens[index + 1].token == TokenEnum.elseCommand) {
+        parseCondition(node: node, condition: false);
+        break;
+      } else if (token.token == TokenEnum.openVariableBalise) {
+        parseVariable(node: children);
+      } else if (token.token == TokenEnum.openCommandBalise) {
+        parseCommand(node: children);
+      } else if (token.token == TokenEnum.openBrace) {
+        index++;
+        token = tokens[index];
+
+        if (token.token == TokenEnum.content &&
+            tokens[index + 1].token == TokenEnum.closeBrace) {
+          children.add({'type': 'text', 'value': token.value});
+        } else {
+          error = true;
+          return;
+        }
+      }
+
+      index++;
+    }
+
+    if (condition) {
+      node.add({'trueCondition': children});
+    } else {
+      node.add({'falseCondition': children});
+    }
+  }
+
+  void parseFor({required List<Map<String, dynamic>> node}) {}
 
   void parseContent() {}
 }
