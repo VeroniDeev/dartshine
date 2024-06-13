@@ -2,7 +2,7 @@ import 'package:dartshine/src/templates/lexer/token.dart';
 
 class Parser {
   bool error = false;
-  Map<String, dynamic> result = {};
+  List<Map<String, dynamic>> results = [];
   int index = 0;
   List<Token> tokens;
 
@@ -12,25 +12,47 @@ class Parser {
     while (index < tokens.length) {
       Token token = tokens[index];
       if (token.token == TokenEnum.openCommandBalise) {
-        parseCommand(node: result);
+        parseCommand(node: results);
       } else if (token.token == TokenEnum.openVariableBalise) {
-        parseVariable(node: result);
+        parseVariable(node: results);
       }
 
       index++;
     }
   }
 
-  void parseCommand({required Map<String, dynamic> node}) {
+  void parseCommand({required List<Map<String, dynamic>> node}) {
     index++;
     Token token = tokens[index];
 
-    if(token.token == TokenEnum.ifCommand){}
+    if (token.token == TokenEnum.ifCommand) {}
   }
 
-  void parseVariable({required Map<String, dynamic> node}) {}
+  void parseVariable({required List<Map<String, dynamic>> node}) {
+    index++;
+    Token token = tokens[index];
+    Map<String, dynamic> result = {};
 
-  void parseCondition({required Map<String, dynamic> node}) {}
+    if (token.token == TokenEnum.variableName) {
+      result['type'] = 'variable';
+      result['name'] = token.value!;
+    } else {
+      error = true;
+      return;
+    }
+
+    index++;
+    token = tokens[index];
+
+    if(token.token != TokenEnum.closeVariableBalise){
+      error = true;
+      return;
+    }
+
+    node.add(result);
+  }
+
+  void parseCondition({required List<Map<String, dynamic>> node}) {}
 
   void parseFor() {}
 
