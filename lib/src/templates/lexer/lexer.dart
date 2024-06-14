@@ -54,7 +54,7 @@ class Lexer {
       } else if (token == '<\$') {
         token = '';
         tokens.add(Token(
-            token: TokenEnum.openVariableBalise, position: position));
+            token: TokenEnum.openVariableBalise));
         isCommand = false;
       } else if (token == '<#') {
         token = '';
@@ -73,7 +73,7 @@ class Lexer {
       } else if (token == '\$>') {
         token = '';
         tokens.add(Token(
-            token: TokenEnum.closeVariableBalise, position: position));
+            token: TokenEnum.closeVariableBalise));
       } else if (token == '"' || token == '\'') {
         opentext = true;
         tokens
