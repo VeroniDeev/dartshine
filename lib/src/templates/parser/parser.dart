@@ -13,9 +13,9 @@ class Parser {
       Token token = tokens[index];
 
       if (token.token == TokenEnum.openCommandBalise) {
-        parseCommand(node: results);
+        parseCommand(node: results, position: token.position!);
       } else if (token.token == TokenEnum.openVariableBalise) {
-        parseVariable(node: results);
+        parseVariable(node: results, position: token.position!);
       } else {
         error = true;
       }
@@ -28,21 +28,22 @@ class Parser {
     }
   }
 
-  void parseCommand({required List<Map<String, dynamic>> node}) {
+  void parseCommand(
+      {required List<Map<String, dynamic>> node, required int position}) {
     index++;
     Token token = tokens[index];
 
     if (token.token == TokenEnum.ifCommand) {
-      parseCondition(node: node, condition: true);
+      parseCondition(node: node, condition: true, position: position);
     } else if (token.token == TokenEnum.forCommand) {
-      parseFor(node: node);
+      parseFor(node: node, position: position);
     } else {
       error = true;
       return;
     }
   }
 
-  void parseVariable({required List<Map<String, dynamic>> node}) {
+  void parseVariable({required List<Map<String, dynamic>> node, required int position}) {
     index++;
     Token token = tokens[index];
     Map<String, dynamic> result = {};
@@ -62,6 +63,9 @@ class Parser {
       error = true;
       return;
     }
+
+    result['startPosition'] = position;
+    result['endPosition'] = token.position!;
 
     node.add(result);
   }
@@ -89,7 +93,10 @@ class Parser {
   }
 
   void parseCondition(
-      {required List<Map<String, dynamic>> node, required bool condition, Map<String, dynamic>? elseNode}) {
+      {required List<Map<String, dynamic>> node,
+      required bool condition,
+      Map<String, dynamic>? elseNode,
+      required int position}) {
     Token token = tokens[index];
     Map<String, dynamic> result = {'type': 'condition'};
 
@@ -123,12 +130,16 @@ class Parser {
           tokens[index + 1].token == TokenEnum.elseCommand &&
           tokens[index + 2].token == TokenEnum.closeCommandBalise) {
         index++;
-        parseCondition(node: node, condition: false, elseNode: result);
+        parseCondition(
+            node: node,
+            condition: false,
+            elseNode: result,
+            position: token.position!);
         break;
       } else if (token.token == TokenEnum.openVariableBalise) {
-        parseVariable(node: children);
+        parseVariable(node: children, position: token.position!);
       } else if (token.token == TokenEnum.openCommandBalise) {
-        parseCommand(node: children);
+        parseCommand(node: children, position: token.position!);
       } else if (token.token == TokenEnum.openBrace) {
         index++;
         token = tokens[index];
@@ -146,6 +157,11 @@ class Parser {
       index++;
     }
 
+    token = tokens[index];
+
+    result['startPosition'] = position;
+    result['endPosition'] = token.position;
+
     if (condition) {
       result['trueCondition'] = children;
       node.add(result);
@@ -154,7 +170,8 @@ class Parser {
     }
   }
 
-  void parseFor({required List<Map<String, dynamic>> node}) {
+  void parseFor(
+      {required List<Map<String, dynamic>> node, required int position}) {
     index++;
     Token token = tokens[index];
     Map<String, dynamic> forCondition = {'type': 'for'};
@@ -199,7 +216,7 @@ class Parser {
         index += 2;
         break;
       } else if (token.token == TokenEnum.openVariableBalise) {
-        parseVariable(node: children);
+        parseVariable(node: children, position: token.position!);
       } else if (token.token == TokenEnum.openBrace) {
         index++;
         token = tokens[index];
@@ -213,12 +230,17 @@ class Parser {
           return;
         }
       } else if (token.token == TokenEnum.openCommandBalise) {
-        parseCommand(node: children);
+        parseCommand(node: children, position: token.position!);
       } else {
         error = true;
         return;
       }
     }
+
+    token = tokens[index];
+
+    forCondition['startPosition'] = position;
+    forCondition['endPosition'] = token.position;
 
     forCondition['children'] = children;
 
