@@ -15,11 +15,21 @@ class Render {
 
       if (map['type'] == 'variable') {
         data = variableRender(map['name']);
-        sources.replaceRange(map['startPosition'] + padding,
-            map['endPosition'] + 1 + padding, data.split(''));
 
         int startPosition = map['startPosition'];
         int endPosition = map['endPosition'];
+
+        sources.replaceRange(
+            startPosition + padding, endPosition + 1 + padding, data.split(''));
+
+        padding += data.length - (endPosition + 1 - startPosition);
+      } else if (map['type'] == 'for') {
+        data = forRender(map);
+
+        int startPosition = map['startPosition'];
+        int endPosition = map['endPosition'];
+
+        sources.replaceRange(startPosition + padding, endPosition + 1 + padding, data.split(''));
 
         padding += data.length - (endPosition + 1 - startPosition);
       }
@@ -27,11 +37,33 @@ class Render {
   }
 
   String variableRender(String variableName) {
-    String data = '';
+    StringBuffer data = StringBuffer();
     String value = variableList[variableName];
 
-    data += value;
+    data.write(value);
 
-    return data;
+    return data.toString();
+  }
+
+  String forRender(Map<String, dynamic> forParserResult) {
+    StringBuffer data = StringBuffer();
+    List<dynamic> values = variableList[forParserResult['collection']];
+
+    for (dynamic value in values) {
+      variableList[forParserResult['variable']] = value;
+
+      List<Map<String, dynamic>> childrenList = forParserResult['children'];
+
+      for (Map<String, dynamic> children in childrenList) {
+        if (children['type'] == 'text') {
+          data.write(children['value']);
+        } else if (children['type'] == 'variable') {
+          String result = variableRender(children['name']);
+          data.write(result);
+        }
+      }
+    }
+
+    return data.toString();
   }
 }
