@@ -22,6 +22,7 @@ enum TokenEnum {
 class Token {
   TokenEnum token;
   String? value;
+  int position;
 
-  Token({required this.token, this.value});
+  Token({required this.token, this.value, required this.position});
 }
