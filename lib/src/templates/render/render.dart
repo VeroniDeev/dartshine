@@ -115,61 +115,69 @@ class Render {
       return false;
     }
 
-    if (conditionList[0].token == TokenEnum.variableName ||
-        conditionList[0].token == TokenEnum.stringValue) {
-      result = parseStringCondition(conditionList: conditionList);
-    } else {
-      result = parseIntCondition(conditionList: conditionList);
-    }
+    List<dynamic> condition = [];
 
-    return result;
-  }
-
-  bool parseStringCondition({required List<Token> conditionList}) {
-    bool result = false;
-
-    switch (conditionList[1].value) {
-      case '==':
-        result = conditionList[0].value == conditionList[2].value;
-        break;
-      case '!=':
-        result = conditionList[0].value != conditionList[2].value;
-        break;
-    }
-
-    return result;
-  }
-
-  bool parseIntCondition({required List<Token> conditionList}) {
-    bool result = false;
-
-    if (int.tryParse(conditionList[0].value!) == null ||
-        int.tryParse(conditionList[2].value!) == null) {
+    if(conditionList[0].token == TokenEnum.variableName){
+      condition.add(parseVariableCondition(variable: conditionList[0]));
+    }else if(conditionList[0].token == TokenEnum.stringValue){
+      condition.add(conditionList[0].value);
+    }else if(conditionList[0].token == TokenEnum.intValue){
+      condition.add(conditionList[0].value);
+    }else{
       error = true;
       return false;
     }
 
-    int firstCondition = int.parse(conditionList[0].value!);
-    int secondCondition = int.parse(conditionList[2].value!);
+    condition.add(conditionList[1]);
+
+    if(conditionList[2].token == TokenEnum.variableName){
+      condition.add(parseVariableCondition(variable: conditionList[2]));
+    }else if(conditionList[2].token == TokenEnum.stringValue){
+      condition.add(conditionList[2].value);
+    }else if(conditionList[2].token == TokenEnum.intValue){
+      condition.add(conditionList[2].value);
+    }else{
+      error = true;
+      return false;
+    }
+
+    try {
+      result = parseCondition(conditionList: condition);
+    } catch (e) {
+      error = true;
+      return false;
+    }
+
+    return result;
+  }
+
+  dynamic parseVariableCondition({required Token variable}) {
+    dynamic result = variableList[variable.value];
+
+    return result;
+  }
+
+  bool parseCondition({required List<dynamic> conditionList}) {
+    bool result = false;
 
     switch (conditionList[1].value) {
       case '==':
-        result = firstCondition == secondCondition;
+        result = conditionList[0] == conditionList[2];
         break;
       case '!=':
-        result = firstCondition != secondCondition;
+        result = conditionList[0] != conditionList[2];
         break;
       case '<=':
-        result = firstCondition <= secondCondition;
+        result = conditionList[0] <= conditionList[2];
         break;
       case '>=':
-        result = firstCondition >= secondCondition;
+        result = conditionList[0] >= conditionList[2];
         break;
       case '<':
-        result = firstCondition < secondCondition;
+        result = conditionList[0] < conditionList[2];
         break;
       case '>':
-        result = firstCondition > secondCondition;
+        result = conditionList[0] > conditionList[2];
         break;
     }
 
