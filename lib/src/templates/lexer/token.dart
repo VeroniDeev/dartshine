@@ -13,7 +13,6 @@ enum TokenEnum {
   content,
   operator,
   intValue,
-  guillemet,
   stringValue,
   openBrace,
   closeBrace

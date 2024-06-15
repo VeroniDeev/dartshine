@@ -22,8 +22,6 @@ class Lexer {
         tokens.add(Token(
             token: TokenEnum.stringValue,
             value: token));
-        tokens
-            .add(Token(token: TokenEnum.guillemet));
         opentext = false;
         token = '';
         continue;
@@ -77,8 +75,6 @@ class Lexer {
             token: TokenEnum.closeVariableBalise, position: position));
       } else if (token == '"' || token == '\'') {
         opentext = true;
-        tokens
-            .add(Token(token: TokenEnum.guillemet));
         token = '';
       } else if (source == '{') {
         openbrace = true;
