@@ -1,3 +1,4 @@
+import 'package:dartshine/src/orm/orm.dart';
 import 'package:dartshine/src/orm/types.dart';
 import 'package:sqlite3/sqlite3.dart';
 
@@ -14,22 +15,22 @@ class CreateTable {
     }
   }
 
-  void create(List<List<Map<String, dynamic>>> fieldsList, String tableName) {
+  void create(List<Orm> ormList) {
     if(dbType == DbType.sqlite){
-      for(List<Map<String, dynamic>> fields in fieldsList){
-        String query = createSqlite(fields, tableName);
+      for(Orm orm in ormList){
+        String query = createSqlite(orm);
         sqliteDb?.execute(query);
       }
     }
   }
 
-  String createSqlite(List<Map<String, dynamic>> fields, String tableName) {
+  String createSqlite(Orm orm) {
     StringBuffer createQuery = StringBuffer();
 
-    createQuery.write('CREATE TABLE IF NOT EXISTS $tableName (');
+    createQuery.write('CREATE TABLE IF NOT EXISTS ${orm.tableName} (');
 
-    for (int i = 0; i < fields.length; i++) {
-      Map<String, dynamic> field = fields[i];
+    for (int i = 0; i < orm.fields.length; i++) {
+      Map<String, dynamic> field = orm.fields[i];
 
       if (field['field_name'] is String) {
         createQuery.write("${field['field_name']} ");
@@ -47,7 +48,7 @@ class CreateTable {
         createQuery.write('AUTOINCREMENT ');
       }
 
-      if(i != fields.length-1){
+      if(i != orm.fields.length-1){
         createQuery.write(',');
       }
     }
