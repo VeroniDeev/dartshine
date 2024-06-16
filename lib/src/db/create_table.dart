@@ -14,14 +14,23 @@ class CreateTable {
     }
   }
 
-  void create(List<String> tables) {}
+  void create(List<List<Map<String, dynamic>>> fieldsList, String tableName) {
+    if(dbType == DbType.sqlite){
+      for(List<Map<String, dynamic>> fields in fieldsList){
+        String query = createSqlite(fields, tableName);
+        sqliteDb?.execute(query);
+      }
+    }
+  }
 
-  void createSqlite(List<Map<String, dynamic>> fields, String tableName) {
+  String createSqlite(List<Map<String, dynamic>> fields, String tableName) {
     StringBuffer createQuery = StringBuffer();
 
     createQuery.write('CREATE TABLE IF NOT EXISTS $tableName (');
 
-    for (Map<String, dynamic> field in fields) {
+    for (int i = 0; i < fields.length; i++) {
+      Map<String, dynamic> field = fields[i];
+
       if (field['field_name'] is String) {
         createQuery.write("${field['field_name']} ");
       }
@@ -38,9 +47,13 @@ class CreateTable {
         createQuery.write('AUTOINCREMENT ');
       }
 
-      createQuery.write(',');
+      if(i != fields.length-1){
+        createQuery.write(',');
+      }
     }
 
     createQuery.write(');');
+
+    return createQuery.toString();
   }
 }
