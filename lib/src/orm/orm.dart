@@ -5,10 +5,16 @@ import 'package:sqlite3/sqlite3.dart';
 class Orm{
   String tableName;
   List<Map<String, dynamic>> fields;
-  DbType dbType = DbType.sqlite;
+  DbType? dbType;
   Database? sqliteDb;
 
-  Orm({required this.tableName, required this.fields, required this.dbType, this.sqliteDb});
+  Orm({required this.tableName, required this.fields, DbType? databaseType, this.sqliteDb}){
+    if(databaseType != null){
+      dbType = databaseType;
+    }else{
+      dbType = DbType.sqlite;
+    }
+  }
 
   void createTable() {
     if(dbType == DbType.sqlite){
