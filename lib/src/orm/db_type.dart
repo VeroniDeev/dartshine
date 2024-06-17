@@ -1,0 +1,4 @@
+enum DbType{
+  sqlite,
+  postgresql
+}
