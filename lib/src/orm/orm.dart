@@ -46,7 +46,7 @@ class Orm{
         createQuery.write('AUTOINCREMENT ');
       }
 
-      if(i != fields.length-1){
+      if(i < fields.length-1){
         createQuery.write(',');
       }
     }
