@@ -2,23 +2,27 @@ import 'package:dartshine/src/orm/db_type.dart';
 import 'package:dartshine/src/orm/types.dart';
 import 'package:sqlite3/sqlite3.dart';
 
-class Orm{
+class Orm {
   String tableName;
   List<Map<String, dynamic>> fields;
   DbType? dbType;
   Database? sqliteDb;
 
-  Orm({required this.tableName, required this.fields, DbType? databaseType, this.sqliteDb}){
-    if(databaseType != null){
+  Orm(
+      {required this.tableName,
+      required this.fields,
+      DbType? databaseType,
+      this.sqliteDb}) {
+    if (databaseType != null) {
       dbType = databaseType;
-    }else{
+    } else {
       dbType = DbType.sqlite;
     }
   }
 
   void createTable() {
-    if(dbType == DbType.sqlite){
-        createSqliteTable();
+    if (dbType == DbType.sqlite) {
+      createSqliteTable();
     }
   }
 
@@ -46,7 +50,7 @@ class Orm{
         createQuery.write('AUTOINCREMENT ');
       }
 
-      if(i < fields.length-1){
+      if (i < fields.length - 1) {
         createQuery.write(',');
       }
     }
@@ -56,8 +60,7 @@ class Orm{
     sqliteDb?.execute(createQuery.toString());
   }
 
-
-  void insert({required Map<String, dynamic> datas}){
+  void insert({required Map<String, dynamic> datas}) {
     StringBuffer columnInsertQuery = StringBuffer();
     StringBuffer valueInsertQuery = StringBuffer();
 
@@ -66,27 +69,63 @@ class Orm{
 
     List<MapEntry<String, dynamic>> dataToList = datas.entries.toList();
 
-    for(int i = 0; i < datas.length; i++){
+    for (int i = 0; i < datas.length; i++) {
       MapEntry<String, dynamic> data = dataToList[i];
 
       columnInsertQuery.write(data.key);
 
-      if(data.value is String){
+      if (data.value is String) {
         valueInsertQuery.write("'${data.value}'");
-      }else if(data.value is int){
+      } else if (data.value is int) {
         valueInsertQuery.write(data.value.toString());
       }
 
-      if(i < datas.length-1 ){
+      if (i < datas.length - 1) {
         columnInsertQuery.write(',');
         valueInsertQuery.write(',');
       }
     }
 
-    String result = '${columnInsertQuery.toString()}) ${valueInsertQuery.toString()});';
+    String result =
+        '${columnInsertQuery.toString()}) ${valueInsertQuery.toString()});';
 
-    if(dbType == DbType.sqlite){
+    if (dbType == DbType.sqlite) {
       sqliteDb?.execute(result);
     }
+  }
+
+  List<Map<String, dynamic>> get({required Map<String, dynamic> conditions}) {
+    StringBuffer selectQuery = StringBuffer();
+    selectQuery.write('SELECT ');
+
+    if (conditions.containsKey('column') && conditions['column'] is List<String>) {
+      List<String> selectorArray = conditions['column'];
+
+      for (int i = 0; i < selectorArray.length; i++) {
+        selectQuery.write(selectorArray[i]);
+
+        if (i < selectorArray.length - 1) {
+          selectQuery.write(", ");
+        }
+      }
+    } else {
+      selectQuery.write('*');
+    }
+
+    selectQuery.write(" FROM $tableName");
+
+    List<Map<String, dynamic>> result = [];
+
+    if (dbType == DbType.sqlite) {
+      final ResultSet rows = sqliteDb!.select(selectQuery.toString());
+
+      for (final Row row in rows) {
+        for (String key in rows.columnNames) {
+          result.add({key: row[key]});
+        }
+      }
+    }
+
+    return result;
   }
 }
