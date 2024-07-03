@@ -7,7 +7,7 @@ class Response{
   Map<String, String> headers = {};
   late HttpResponse response;
 
-  Response({required this.status, required this.body}){
+  Response({required this.status, this.body = ''}){
     response = HttpResponse(status: status, headers: headers, body: body);
   }
 }

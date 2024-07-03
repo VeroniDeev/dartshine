@@ -5,9 +5,9 @@ class HttpResponse {
   Status status;
   Map<String, String> headers;
   late String response;
-  String? body;
+  String body;
 
-  HttpResponse({this.httpVersion = 'HTTP/1.1', required this.status, required this.headers, this.body});
+  HttpResponse({this.httpVersion = 'HTTP/1.1', required this.status, required this.headers, this.body = ''});
 
   void createResponse() {
     response = "$httpVersion ${statusToString(status)}\r\n";
@@ -15,9 +15,7 @@ class HttpResponse {
     headers.forEach((key, value) => response += "$key: $value\r\n");
 
     response += "\r\n";
-    
-    if (body != null) {
-      response += body!;
-    }
+
+    response += body;
   }
 }

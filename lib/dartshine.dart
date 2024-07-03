@@ -19,6 +19,7 @@ class Server {
   void run() {
     ServerMaker server = ServerMaker(port);
     server.addOnRequest(onRequest);
+    server.run();
   }
 
   Future<void> onRequest(PublicHandler handler) async {
@@ -29,7 +30,10 @@ class Server {
     } else if (uri.contains('.css')) {
     } else if (uri.contains('.js')) {
     } else if (uri.contains(RegExp(r'\.(png|jpg|jpeg|gif)$'))) {
-    } else {}
+    } else {
+      HttpResponse response = findRoutes(request);
+      handler.sendHtml(response.body, response.status, response.headers);
+    }
   }
 
   HttpResponse findRoutes(HttpRequest request) {
@@ -47,7 +51,7 @@ class Server {
     }
 
     DartshineController controller = route['controller'];
-    Response response = Response(status: Status.internalServerError, body: '');
+    Response response = Response(status: Status.internalServerError);
 
     switch (request.method) {
       case Method.get:
