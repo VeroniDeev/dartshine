@@ -2,13 +2,13 @@ import 'dart:io';
 import '../serialization/request.dart';
 import '../tcp/public_handler.dart';
 
-class Server{
+class ServerMaker{
   final int port;
   late ServerSocket server;
   late Future<void> Function(PublicHandler handler) onRequest;
   bool _isOnRequestInitialized = false;
 
-  Server(this.port);
+  ServerMaker(this.port);
 
   void addOnRequest(Future<void> Function(PublicHandler handler) onRequest){
     this.onRequest = onRequest;

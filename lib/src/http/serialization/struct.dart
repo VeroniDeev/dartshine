@@ -45,3 +45,41 @@ Method methodWithString(String method) {
   }
   return result;
 }
+
+String methodToString(Method method) {
+  String result = '';
+
+  switch (method) {
+    case Method.get:
+      result = 'GET';
+      break;
+    case Method.post:
+      result = 'POST';
+      break;
+    case Method.head:
+      result = 'HEAD';
+      break;
+    case Method.put:
+      result = 'PUT';
+      break;
+    case Method.delete:
+      result = 'DELETE';
+      break;
+    case Method.connect:
+      result = 'CONNECT';
+      break;
+    case Method.option:
+      result = 'OPTION';
+      break;
+    case Method.trace:
+      result = 'TRACE';
+      break;
+    case Method.patch:
+      result = 'PATCH';
+      break;
+    case Method.unknow:
+      result = '';
+      break;
+  }
+  return result;
+}
