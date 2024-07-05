@@ -73,6 +73,7 @@ class Lexer {
         token = '';
         tokens.add(Token(
             token: TokenEnum.closeVariableBalise, position: position));
+        isCommand = null;
       } else if (token == '"' || token == '\'') {
         opentext = true;
         token = '';
