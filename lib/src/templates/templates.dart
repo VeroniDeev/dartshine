@@ -7,7 +7,7 @@ class Template{
   List<String> sources = [];
 
   Template({required String path}){
-    readFile(path).then((value) => sources = value);
+    sources = readFile(path);
   }
 
   String render({required Map<String, dynamic> variableList}){

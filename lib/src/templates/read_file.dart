@@ -1,8 +1,8 @@
 import 'dart:io';
 
-Future<List<String>> readFile(String path) async {
+List<String> readFile(String path) {
   final file = File(path);
-  final content = await file.readAsString();
+  final content = file.readAsStringSync();
 
   return content.split('');
 }

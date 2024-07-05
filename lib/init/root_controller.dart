@@ -1,0 +1,11 @@
+import 'package:dartshine/dartshine.dart';
+
+class RootController extends DartshineController {
+  @override
+  Response get() {
+    return Response(
+        status: Status.ok,
+        body: Template(path: 'assets/index.html')
+            .render(variableList: {'name': '{}'}));
+  }
+}

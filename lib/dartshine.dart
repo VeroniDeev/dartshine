@@ -1,4 +1,14 @@
-library;
+library dartshine;
+
+export 'src/controllers/controllers.dart';
+export 'src/controllers/response.dart';
+export 'src/orm/orm.dart';
+export 'src/orm/types.dart';
+export 'src/orm/db_type.dart';
+export 'src/routes/routes.dart';
+export 'src/templates/templates.dart';
+export 'src/http/serialization/status.dart';
+
 
 import 'package:dartshine/src/controllers/controllers.dart';
 import 'package:dartshine/src/controllers/response.dart';
