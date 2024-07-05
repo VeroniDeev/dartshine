@@ -23,12 +23,20 @@ import 'package:dartshine/src/routes/routes.dart';
 class Server {
   int port;
   DartshineRoute routes;
+  bool debug;
 
-  Server({this.port = 8000, required this.routes});
+  Server({this.port = 8000, required this.routes, this.debug = true});
 
   void run() {
     ServerMaker server = ServerMaker(port);
     server.addOnRequest(onRequest);
+
+    if(debug){
+      print('Server run in port $port');
+      print('Link: http://localhost:$port');
+      print('to quit the server you must do CTRL + C');
+    }
+
     server.run();
   }
 
@@ -36,10 +44,7 @@ class Server {
     HttpRequest request = handler.request;
     String uri = request.uri;
 
-    if (uri.contains('.html')) {
-    } else if (uri.contains('.css')) {
-    } else if (uri.contains('.js')) {
-    } else if (uri.contains(RegExp(r'\.(png|jpg|jpeg|gif)$'))) {
+    if (uri.contains('.css') || uri.contains('.js') || uri.contains(RegExp(r'\.(png|jpg|jpeg|gif)$')) ) {
     } else {
       HttpResponse response = findRoutes(request);
       handler.sendHtml(response.body, response.status, response.headers);
