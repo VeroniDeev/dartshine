@@ -9,6 +9,7 @@ export 'src/routes/routes.dart';
 export 'src/templates/templates.dart';
 export 'src/http/serialization/status.dart';
 
+import 'dart:io';
 
 import 'package:dartshine/src/controllers/controllers.dart';
 import 'package:dartshine/src/controllers/response.dart';
@@ -31,7 +32,7 @@ class Server {
     ServerMaker server = ServerMaker(port);
     server.addOnRequest(onRequest);
 
-    if(debug){
+    if (debug) {
       print('Server run in port $port');
       print('Link: http://localhost:$port');
       print('to quit the server you must do CTRL + C');
@@ -44,7 +45,19 @@ class Server {
     HttpRequest request = handler.request;
     String uri = request.uri;
 
-    if (uri.contains('.css') || uri.contains('.js') || uri.contains(RegExp(r'\.(png|jpg|jpeg|gif)$')) ) {
+    if (uri.contains(RegExp(
+        r'\.(html|htm|css|js|json|xml|txt|csv|jpg|jpeg|png|gif|svg|webp|ico|bmp|tiff|tif|mp4|webm|ogg|mov|avi|mkv|mp3|wav|m4a|aac|woff|woff2|ttf|otf|eot|pdf|zip|rar)$'))) {
+      if (uri.startsWith('/')) {
+        uri = uri.substring(1);
+      }
+
+      File file = File(uri);
+
+      if (await file.exists()) {
+        await handler.sendFile(Status.ok, file);
+      } else {
+        handler.sendStatus(Status.notFound);
+      }
     } else {
       HttpResponse response = findRoutes(request);
       handler.sendHtml(response.body, response.status, response.headers);
@@ -87,6 +100,9 @@ class Server {
       default:
     }
 
-    return HttpResponse(status: response.status, headers: response.headers, body: response.body);
+    return HttpResponse(
+        status: response.status,
+        headers: response.headers,
+        body: response.body);
   }
 }
