@@ -19,18 +19,21 @@ import 'package:dartshine/src/http/serialization/status.dart';
 import 'package:dartshine/src/http/serialization/struct.dart';
 import 'package:dartshine/src/http/tcp/public_handler.dart';
 import 'package:dartshine/src/http/tcp/server.dart';
+import 'package:dartshine/src/orm/orm.dart';
 import 'package:dartshine/src/routes/routes.dart';
 
 class Server {
   int port;
   DartshineRoute routes;
+  DartshineOrm orms;
   bool debug;
 
-  Server({this.port = 8000, required this.routes, this.debug = true});
+  Server({this.port = 8000, required this.routes, required this.orms, this.debug = true});
 
   void run() {
     ServerMaker server = ServerMaker(port);
     server.addOnRequest(onRequest);
+    orms.fillOrm();
 
     if (debug) {
       print('Server run in port $port');
