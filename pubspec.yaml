@@ -1,7 +1,10 @@
 name: dartshine
-description: A starting point for Dart libraries or applications.
+description: A web framework which aims to have a clear, clean syntax.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/VeroniDeev/dartshine
+homepage: https://github.com/VeroniDeev/dartshine
+issue_tracker: https://github.com/VeroniDeev/dartshine/issues
+documentation: https://github.com/VeroniDeev/dartshine/wiki
 
 environment:
   sdk: ^3.4.0

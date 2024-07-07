@@ -14,11 +14,13 @@ Future<String> readFile(String path) async {
 Future<void> createProject(String name) async {
   String currentPath = Directory.current.path;
   String projectPath = p.join(currentPath, name);
-  Directory newProjectDir = await Directory(projectPath).create();
+  Directory newProjectDir = Directory(projectPath);
 
   if(await newProjectDir.exists()){
     throw FolderError(folder: newProjectDir.path);
   }
+
+  await newProjectDir.create();
 
   await Directory(p.join(projectPath, 'lib')).create();
   await Directory(p.join(projectPath, 'lib/routes')).create();
@@ -28,13 +30,13 @@ Future<void> createProject(String name) async {
 
   String indexFileContent = await readFile('init/assets/index.html');
   String styleFileContent = await readFile('init/assets/style.css');
-  String controllerFileContent = await readFile('init/root_controller.dart');
-  String routesFileContent = await readFile('init/routes.dart');
-  String mainFileContent = await readFile('init/main.dart');
-  String pubsecFileContent = await readFile('init/pubsec.yaml');
-  String analysisFileContent = await readFile('init/analysis_options.yaml');
-  String userFileContent = await readFile('init/user.dart');
-  String ormsFileContent = await readFile('init/orms.dart');
+  String controllerFileContent = await readFile('init/root_controller');
+  String routesFileContent = await readFile('init/routes');
+  String mainFileContent = await readFile('init/main');
+  String pubsecFileContent = await readFile('init/pubsec');
+  String analysisFileContent = await readFile('init/analysis_options');
+  String userFileContent = await readFile('init/user');
+  String ormsFileContent = await readFile('init/orms');
 
   controllerFileContent = controllerFileContent.replaceAll('{}', name);
   routesFileContent = routesFileContent.replaceAll('{}', name);
