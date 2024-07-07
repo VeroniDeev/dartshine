@@ -23,10 +23,10 @@ import 'package:dartshine/src/orm/orm.dart';
 import 'package:dartshine/src/routes/routes.dart';
 
 class Server {
-  int port;
-  DartshineRoute routes;
-  DartshineOrm orms;
-  bool debug;
+  final int port;
+  final DartshineRoute routes;
+  final DartshineOrm orms;
+  final bool debug;
 
   Server({this.port = 8000, required this.routes, required this.orms, this.debug = true});
 

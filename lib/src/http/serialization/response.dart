@@ -1,11 +1,11 @@
 import '../serialization/status.dart';
 
 class HttpResponse {
-  String httpVersion;
-  Status status;
-  Map<String, String> headers;
+  final String httpVersion;
+  final Status status;
+  final Map<String, String> headers;
   late String response;
-  String body;
+  final String body;
 
   HttpResponse({this.httpVersion = 'HTTP/1.1', required this.status, required this.headers, this.body = ''});
 

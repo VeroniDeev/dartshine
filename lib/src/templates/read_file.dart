@@ -1,8 +1,8 @@
 import 'dart:io';
 
 List<String> readFile(String path) {
-  final file = File(path);
-  final content = file.readAsStringSync();
+  final File file = File(path);
+  final String content = file.readAsStringSync();
 
   return content.split('');
 }

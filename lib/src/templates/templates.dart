@@ -11,13 +11,13 @@ class Template{
   }
 
   String render({required Map<String, dynamic> variableList}){
-    Lexer lexer = Lexer(sources: sources);
+    final Lexer lexer = Lexer(sources: sources);
     lexer.lexer();
 
-    Parser parser = Parser(tokens: lexer.tokens);
+    final Parser parser = Parser(tokens: lexer.tokens);
     parser.parser();
 
-    Render render = Render(parserResult: parser.results, variableList: variableList, sources: sources);
+    final Render render = Render(parserResult: parser.results, variableList: variableList, sources: sources);
     render.render();
 
     return render.sources.join();

@@ -1,8 +1,8 @@
 import 'package:dartshine/src/templates/lexer/token.dart';
 
 class Lexer {
-  List<Token> tokens = [];
-  List<String> sources;
+  final List<Token> tokens = [];
+  final List<String> sources;
   int position = 0;
 
   Lexer({required this.sources});

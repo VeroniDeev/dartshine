@@ -2,9 +2,9 @@ import 'package:dartshine/src/templates/lexer/token.dart';
 
 class Parser {
   bool error = false;
-  List<Map<String, dynamic>> results = [];
+  final List<Map<String, dynamic>> results = [];
   int index = 0;
-  List<Token> tokens;
+  final List<Token> tokens;
 
   Parser({required this.tokens});
 

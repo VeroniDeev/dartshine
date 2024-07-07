@@ -1,9 +1,9 @@
 import 'package:dartshine/src/templates/lexer/token.dart';
 
 class Render {
-  List<Map<String, dynamic>> parserResult;
-  Map<String, dynamic> variableList;
-  List<String> sources;
+  final List<Map<String, dynamic>> parserResult;
+  final Map<String, dynamic> variableList;
+  final List<String> sources;
   int padding = 0;
   bool error = false;
 

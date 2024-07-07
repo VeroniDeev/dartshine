@@ -1,5 +1,5 @@
 class DartshineRoute{
-  List<Map<String, dynamic>> urls = [];
+  final List<Map<String, dynamic>> urls = [];
 
   Map<String, dynamic> findUrl(String reqPath){
     for(Map<String, dynamic> path in urls){

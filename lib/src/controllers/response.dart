@@ -2,9 +2,9 @@ import 'package:dartshine/src/http/serialization/response.dart';
 import 'package:dartshine/src/http/serialization/status.dart';
 
 class Response{
-  Status status;
-  String body;
-  Map<String, String> headers = {};
+  final Status status;
+  final String body;
+  final Map<String, String> headers = {};
   late HttpResponse response;
 
   Response({required this.status, this.body = ''}){

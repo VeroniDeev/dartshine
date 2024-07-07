@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dartshine/src/error/folder_error.dart';
 import 'package:path/path.dart' as p;
 import 'dart:isolate';
 
@@ -14,6 +15,10 @@ Future<void> createProject(String name) async {
   String currentPath = Directory.current.path;
   String projectPath = p.join(currentPath, name);
   Directory newProjectDir = await Directory(projectPath).create();
+
+  if(await newProjectDir.exists()){
+    throw FolderError(folder: newProjectDir.path);
+  }
 
   await Directory(p.join(projectPath, 'lib')).create();
   await Directory(p.join(projectPath, 'lib/routes')).create();

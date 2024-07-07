@@ -19,9 +19,9 @@ enum TokenEnum {
 }
 
 class Token {
-  TokenEnum token;
-  String? value;
-  int? position;
+  final TokenEnum token;
+  final String? value;
+  final int? position;
 
   Token({required this.token, this.value, this.position});
 }

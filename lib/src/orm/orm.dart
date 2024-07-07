@@ -3,8 +3,8 @@ import 'package:dartshine/src/orm/types.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 class Orm {
-  String tableName;
-  List<Map<String, dynamic>> fields;
+  final String tableName;
+  final List<Map<String, dynamic>> fields;
   DbType? dbType;
   Database? sqliteDb;
 
@@ -21,7 +21,7 @@ class Orm {
   }
 
   void createSqliteTable() {
-    StringBuffer createQuery = StringBuffer();
+    final StringBuffer createQuery = StringBuffer();
 
     createQuery.write('CREATE TABLE IF NOT EXISTS $tableName (');
 
@@ -80,7 +80,7 @@ class Orm {
       }
     }
 
-    String result =
+    final String result =
         '${columnInsertQuery.toString()}) ${valueInsertQuery.toString()});';
 
     if (dbType == DbType.sqlite) {
@@ -89,7 +89,7 @@ class Orm {
   }
 
   List<Map<String, dynamic>> get({required Map<String, dynamic> conditions}) {
-    StringBuffer selectQuery = StringBuffer();
+    final StringBuffer selectQuery = StringBuffer();
     selectQuery.write('SELECT ');
 
     if (conditions.containsKey('column') && conditions['column'] is List<String>) {
@@ -108,7 +108,7 @@ class Orm {
 
     selectQuery.write(" FROM $tableName");
 
-    List<Map<String, dynamic>> result = [];
+    final List<Map<String, dynamic>> result = [];
 
     if (dbType == DbType.sqlite) {
       final ResultSet rows = sqliteDb!.select(selectQuery.toString());
