@@ -16,7 +16,7 @@ Future<void> createProject(String name) async {
   String projectPath = p.join(currentPath, name);
   Directory newProjectDir = Directory(projectPath);
 
-  if(await newProjectDir.exists()){
+  if (await newProjectDir.exists()) {
     throw FolderError(folder: newProjectDir.path);
   }
 
@@ -50,7 +50,8 @@ Future<void> createProject(String name) async {
   File indexFile = File(p.join(projectPath, 'assets/index.html'));
   File mainFile = File(p.join(projectPath, 'lib/$name.dart'));
   File binFile = File(p.join(projectPath, 'bin/$name.dart'));
-  File controllerFile = File(p.join(projectPath, 'lib/controllers/root_controller.dart'));
+  File controllerFile =
+      File(p.join(projectPath, 'lib/controllers/root_controller.dart'));
   File routesFile = File(p.join(projectPath, 'lib/routes/routes.dart'));
   File pubspecFile = File(p.join(projectPath, 'pubspec.yaml'));
   File analysisFile = File(p.join(projectPath, 'analysis_options.yaml'));

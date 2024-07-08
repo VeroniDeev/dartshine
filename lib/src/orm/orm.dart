@@ -92,7 +92,8 @@ class Orm {
     final StringBuffer selectQuery = StringBuffer();
     selectQuery.write('SELECT ');
 
-    if (conditions.containsKey('column') && conditions['column'] is List<String>) {
+    if (conditions.containsKey('column') &&
+        conditions['column'] is List<String>) {
       List<String> selectorArray = conditions['column'];
 
       for (int i = 0; i < selectorArray.length; i++) {
@@ -124,17 +125,16 @@ class Orm {
   }
 }
 
-
-class DartshineOrm{
+class DartshineOrm {
   List<Orm> orms = [];
   DbType type = DbType.sqlite;
   String name = '';
 
-  void fillOrm(){
-    if(type == DbType.sqlite){
+  void fillOrm() {
+    if (type == DbType.sqlite) {
       Database sqliteDb = sqlite3.open(name);
 
-      for(Orm orm in orms){
+      for (Orm orm in orms) {
         orm.dbType = type;
         orm.sqliteDb = sqliteDb;
         orm.createSqliteTable();

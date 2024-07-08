@@ -28,7 +28,11 @@ class Server {
   final DartshineOrm orms;
   final bool debug;
 
-  Server({this.port = 8000, required this.routes, required this.orms, this.debug = true});
+  Server(
+      {this.port = 8000,
+      required this.routes,
+      required this.orms,
+      this.debug = true});
 
   void run() {
     ServerMaker server = ServerMaker(port);

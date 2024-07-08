@@ -19,9 +19,7 @@ class Lexer {
         token += source;
         continue;
       } else if (opentext && (source == '"' || source == '\'')) {
-        tokens.add(Token(
-            token: TokenEnum.stringValue,
-            value: token));
+        tokens.add(Token(token: TokenEnum.stringValue, value: token));
         opentext = false;
         token = '';
         continue;
@@ -31,11 +29,8 @@ class Lexer {
         token += source;
         continue;
       } else if (openbrace && source == '}') {
-        tokens.add(Token(
-            token: TokenEnum.content,
-            value: token));
-        tokens.add(
-            Token(token: TokenEnum.closeBrace));
+        tokens.add(Token(token: TokenEnum.content, value: token));
+        tokens.add(Token(token: TokenEnum.closeBrace));
         openbrace = false;
         token = '';
         continue;
@@ -51,13 +46,13 @@ class Lexer {
         position = i;
       } else if (token == '<\$') {
         token = '';
-        tokens.add(Token(
-            token: TokenEnum.openVariableBalise, position: position));
+        tokens.add(
+            Token(token: TokenEnum.openVariableBalise, position: position));
         isCommand = false;
       } else if (token == '<#') {
         token = '';
-        tokens.add(Token(
-            token: TokenEnum.openCommandBalise, position: position));
+        tokens
+            .add(Token(token: TokenEnum.openCommandBalise, position: position));
         isCommand = true;
       } else if (source == '#' || source == '\$') {
         token = '';
@@ -65,31 +60,28 @@ class Lexer {
       } else if (token == '#>') {
         position = i;
         token = '';
-        tokens.add(Token(
-            token: TokenEnum.closeCommandBalise, position: position));
+        tokens.add(
+            Token(token: TokenEnum.closeCommandBalise, position: position));
         isCommand = null;
       } else if (token == '\$>') {
         position = i;
         token = '';
-        tokens.add(Token(
-            token: TokenEnum.closeVariableBalise, position: position));
+        tokens.add(
+            Token(token: TokenEnum.closeVariableBalise, position: position));
         isCommand = null;
       } else if (token == '"' || token == '\'') {
         opentext = true;
         token = '';
       } else if (source == '{') {
         openbrace = true;
-        tokens
-            .add(Token(token: TokenEnum.openBrace));
+        tokens.add(Token(token: TokenEnum.openBrace));
         token = '';
       } else if (source == ' ') {
         if (token.trim().isNotEmpty) {
           if (isCommand == true) {
             lexeCommand(token);
           } else if (isCommand == false) {
-            tokens.add(Token(
-                token: TokenEnum.variableName,
-                value: token));
+            tokens.add(Token(token: TokenEnum.variableName, value: token));
           }
         }
         token = '';
@@ -99,49 +91,35 @@ class Lexer {
 
   void lexeCommand(String token) {
     if (token == 'for') {
-      tokens
-          .add(Token(token: TokenEnum.forCommand));
+      tokens.add(Token(token: TokenEnum.forCommand));
     } else if (token == 'if') {
       tokens.add(Token(token: TokenEnum.ifCommand));
     } else if (token == 'else') {
-      tokens
-          .add(Token(token: TokenEnum.elseCommand));
+      tokens.add(Token(token: TokenEnum.elseCommand));
     } else if (token == 'in') {
       tokens.add(Token(token: TokenEnum.inCommand));
     } else if (token == 'endif') {
-      tokens.add(
-          Token(token: TokenEnum.endIfCommand));
+      tokens.add(Token(token: TokenEnum.endIfCommand));
     } else if (token == 'endfor') {
-      tokens.add(
-          Token(token: TokenEnum.endForCommand));
+      tokens.add(Token(token: TokenEnum.endForCommand));
     } else if (token == '==') {
-      tokens.add(Token(
-          token: TokenEnum.operator, value: token));
+      tokens.add(Token(token: TokenEnum.operator, value: token));
     } else if (token == '!=') {
-      tokens.add(Token(
-          token: TokenEnum.operator, value: token));
+      tokens.add(Token(token: TokenEnum.operator, value: token));
     } else if (token == '&&') {
-      tokens.add(Token(
-          token: TokenEnum.operator, value: token));
+      tokens.add(Token(token: TokenEnum.operator, value: token));
     } else if (token == '>') {
-      tokens.add(Token(
-          token: TokenEnum.operator, value: token));
+      tokens.add(Token(token: TokenEnum.operator, value: token));
     } else if (token == '<') {
-      tokens.add(Token(
-          token: TokenEnum.operator, value: token));
+      tokens.add(Token(token: TokenEnum.operator, value: token));
     } else if (token == '<=') {
-      tokens.add(Token(
-          token: TokenEnum.operator, value: token));
+      tokens.add(Token(token: TokenEnum.operator, value: token));
     } else if (token == '>=') {
-      tokens.add(Token(
-          token: TokenEnum.operator, value: token));
+      tokens.add(Token(token: TokenEnum.operator, value: token));
     } else if (int.tryParse(token) != null || double.tryParse(token) != null) {
-      tokens.add(Token(
-          token: TokenEnum.intValue, value: token));
+      tokens.add(Token(token: TokenEnum.intValue, value: token));
     } else {
-      tokens.add(Token(
-          token: TokenEnum.variableName,
-          value: token));
+      tokens.add(Token(token: TokenEnum.variableName, value: token));
     }
   }
 }

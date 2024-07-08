@@ -1,6 +1,6 @@
-class FolderError extends Error{
+class FolderError extends Error {
   final String folder;
-  
+
   FolderError({required this.folder});
 
   @override

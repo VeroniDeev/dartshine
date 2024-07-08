@@ -1,4 +1,1 @@
-enum DbType{
-  sqlite,
-  postgresql
-}
+enum DbType { sqlite, postgresql }

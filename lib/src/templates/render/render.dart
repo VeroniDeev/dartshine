@@ -117,26 +117,26 @@ class Render {
 
     List<dynamic> condition = [];
 
-    if(conditionList[0].token == TokenEnum.variableName){
+    if (conditionList[0].token == TokenEnum.variableName) {
       condition.add(parseVariableCondition(variable: conditionList[0]));
-    }else if(conditionList[0].token == TokenEnum.stringValue){
+    } else if (conditionList[0].token == TokenEnum.stringValue) {
       condition.add(conditionList[0].value);
-    }else if(conditionList[0].token == TokenEnum.intValue){
+    } else if (conditionList[0].token == TokenEnum.intValue) {
       condition.add(conditionList[0].value);
-    }else{
+    } else {
       error = true;
       return false;
     }
 
     condition.add(conditionList[1]);
 
-    if(conditionList[2].token == TokenEnum.variableName){
+    if (conditionList[2].token == TokenEnum.variableName) {
       condition.add(parseVariableCondition(variable: conditionList[2]));
-    }else if(conditionList[2].token == TokenEnum.stringValue){
+    } else if (conditionList[2].token == TokenEnum.stringValue) {
       condition.add(conditionList[2].value);
-    }else if(conditionList[2].token == TokenEnum.intValue){
+    } else if (conditionList[2].token == TokenEnum.intValue) {
       condition.add(conditionList[2].value);
-    }else{
+    } else {
       error = true;
       return false;
     }

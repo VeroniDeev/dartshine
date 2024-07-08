@@ -7,7 +7,11 @@ class HttpResponse {
   late String response;
   final String body;
 
-  HttpResponse({this.httpVersion = 'HTTP/1.1', required this.status, required this.headers, this.body = ''});
+  HttpResponse(
+      {this.httpVersion = 'HTTP/1.1',
+      required this.status,
+      required this.headers,
+      this.body = ''});
 
   void createResponse() {
     response = "$httpVersion ${statusToString(status)}\r\n";

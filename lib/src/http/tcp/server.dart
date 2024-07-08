@@ -2,7 +2,7 @@ import 'dart:io';
 import '../serialization/request.dart';
 import '../tcp/public_handler.dart';
 
-class ServerMaker{
+class ServerMaker {
   final int port;
   late ServerSocket server;
   late Future<void> Function(PublicHandler handler) onRequest;
@@ -10,7 +10,7 @@ class ServerMaker{
 
   ServerMaker(this.port);
 
-  void addOnRequest(Future<void> Function(PublicHandler handler) onRequest){
+  void addOnRequest(Future<void> Function(PublicHandler handler) onRequest) {
     this.onRequest = onRequest;
     _isOnRequestInitialized = true;
   }
@@ -18,7 +18,7 @@ class ServerMaker{
   void run() async {
     server = await ServerSocket.bind(InternetAddress.anyIPv4, port);
 
-    await for (Socket client in server){
+    await for (Socket client in server) {
       await _handleRequest(client);
     }
   }
@@ -26,8 +26,8 @@ class ServerMaker{
   Future<void> _handleRequest(Socket client) async {
     client.listen((data) async {
       HttpRequest request = convert(data);
-      
-      if(_isOnRequestInitialized){
+
+      if (_isOnRequestInitialized) {
         PublicHandler handler = PublicHandler(client, request);
         await onRequest(handler);
       }

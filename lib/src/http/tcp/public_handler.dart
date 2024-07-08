@@ -23,7 +23,7 @@ class PublicHandler {
     _client.close();
   }
 
-  void sendStatus(Status status){
+  void sendStatus(Status status) {
     HttpResponse response = HttpResponse(headers: {}, status: status);
     response.createResponse();
 

@@ -43,7 +43,8 @@ class Parser {
     }
   }
 
-  void parseVariable({required List<Map<String, dynamic>> node, required int position}) {
+  void parseVariable(
+      {required List<Map<String, dynamic>> node, required int position}) {
     index++;
     Token token = tokens[index];
     Map<String, dynamic> result = {};

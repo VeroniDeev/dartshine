@@ -27,7 +27,7 @@ HttpRequest convert(Uint8List request) {
   for (int i = 0; i >= requestSplit.length; i++) {
     String data = requestSplit[i];
 
-    if(data.isEmpty){
+    if (data.isEmpty) {
       requestSplit.removeRange(0, i);
       break;
     }
@@ -38,7 +38,7 @@ HttpRequest convert(Uint8List request) {
 
   String? body;
 
-  if(requestSplit.isNotEmpty){
+  if (requestSplit.isNotEmpty) {
     body = requestSplit.join();
   }
 

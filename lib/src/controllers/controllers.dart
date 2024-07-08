@@ -1,24 +1,24 @@
 import 'package:dartshine/src/controllers/response.dart';
 import 'package:dartshine/src/http/serialization/status.dart';
 
-class DartshineController{
-  Response get(){
+class DartshineController {
+  Response get() {
     return Response(status: Status.methodNotAllowed, body: "");
   }
 
-  Response post(){
+  Response post() {
     return Response(status: Status.methodNotAllowed, body: "");
   }
 
-  Response put(){
+  Response put() {
     return Response(status: Status.methodNotAllowed, body: "");
   }
 
-  Response delete(){
+  Response delete() {
     return Response(status: Status.methodNotAllowed, body: "");
   }
 
-  Response patch(){
+  Response patch() {
     return Response(status: Status.methodNotAllowed, body: "");
   }
 }
