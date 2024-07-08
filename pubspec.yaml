@@ -22,11 +22,6 @@ dev_dependencies:
 executables:
   dartshine: dartshine
 
-flutter:
-  plugin:
-    platforms:
-      - dart-only
-
 
 platforms:
   windows:
