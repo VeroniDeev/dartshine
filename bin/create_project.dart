@@ -43,7 +43,7 @@ Future<void> createProject(String name) async {
   controllerFileContent = controllerFileContent.replaceAll('{}', name);
   binFileContent = binFileContent.replaceAll('{}', name);
   routesFileContent = routesFileContent.replaceAll('{}', name);
-  ormsFileContent = routesFileContent.replaceAll('{}', name);
+  ormsFileContent = ormsFileContent.replaceAll('{}', name);
   mainFileContent = mainFileContent.replaceAll('{}', name);
   pubspecFileContent = pubspecFileContent.replaceAll('{}', name);
 
