@@ -2,7 +2,7 @@ import 'package:dartshine/dartshine.dart';
 import 'package:{}/routes/routes.dart';
 import 'package:{}/orm/orms.dart';
 
-void main() {
+void run() {
   Server server = Server(routes: Routes(), orms: Orms());
   server.run();
 }

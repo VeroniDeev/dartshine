@@ -38,15 +38,18 @@ Future<void> createProject(String name) async {
   String analysisFileContent = await readFile('init/analysis_options');
   String userFileContent = await readFile('init/user');
   String ormsFileContent = await readFile('init/orms');
+  String binFileContent = await readFile('init/bin');
 
   controllerFileContent = controllerFileContent.replaceAll('{}', name);
+  binFileContent = binFileContent.replaceAll('{}', name);
   routesFileContent = routesFileContent.replaceAll('{}', name);
   ormsFileContent = routesFileContent.replaceAll('{}', name);
   mainFileContent = mainFileContent.replaceAll('{}', name);
   pubspecFileContent = pubspecFileContent.replaceAll('{}', name);
 
   File indexFile = File(p.join(projectPath, 'assets/index.html'));
-  File mainFile = File(p.join(projectPath, 'lib/main.dart'));
+  File mainFile = File(p.join(projectPath, 'lib/$name.dart'));
+  File binFile = File(p.join(projectPath, 'bin/$name.dart'));
   File controllerFile = File(p.join(projectPath, 'lib/controllers/root_controller.dart'));
   File routesFile = File(p.join(projectPath, 'lib/routes/routes.dart'));
   File pubspecFile = File(p.join(projectPath, 'pubspec.yaml'));
@@ -58,6 +61,7 @@ Future<void> createProject(String name) async {
   await indexFile.create();
   await styleFile.create();
   await mainFile.create();
+  await binFile.create();
   await controllerFile.create();
   await routesFile.create();
   await pubspecFile.create();
@@ -68,6 +72,7 @@ Future<void> createProject(String name) async {
   await indexFile.writeAsString(indexFileContent);
   await styleFile.writeAsString(styleFileContent);
   await mainFile.writeAsString(mainFileContent);
+  await binFile.writeAsString(binFileContent);
   await controllerFile.writeAsString(controllerFileContent);
   await routesFile.writeAsString(routesFileContent);
   await pubspecFile.writeAsString(pubspecFileContent);
