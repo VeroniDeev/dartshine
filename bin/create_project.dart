@@ -23,6 +23,7 @@ Future<void> createProject(String name) async {
   await newProjectDir.create();
 
   await Directory(p.join(projectPath, 'lib')).create();
+  await Directory(p.join(projectPath, 'bin')).create();
   await Directory(p.join(projectPath, 'lib/routes')).create();
   await Directory(p.join(projectPath, 'lib/controllers')).create();
   await Directory(p.join(projectPath, 'lib/orm')).create();
@@ -33,21 +34,22 @@ Future<void> createProject(String name) async {
   String controllerFileContent = await readFile('init/root_controller');
   String routesFileContent = await readFile('init/routes');
   String mainFileContent = await readFile('init/main');
-  String pubsecFileContent = await readFile('init/pubsec');
+  String pubspecFileContent = await readFile('init/pubspec');
   String analysisFileContent = await readFile('init/analysis_options');
   String userFileContent = await readFile('init/user');
   String ormsFileContent = await readFile('init/orms');
 
   controllerFileContent = controllerFileContent.replaceAll('{}', name);
   routesFileContent = routesFileContent.replaceAll('{}', name);
+  ormsFileContent = routesFileContent.replaceAll('{}', name);
   mainFileContent = mainFileContent.replaceAll('{}', name);
-  pubsecFileContent = pubsecFileContent.replaceAll('{}', name);
+  pubspecFileContent = pubspecFileContent.replaceAll('{}', name);
 
   File indexFile = File(p.join(projectPath, 'assets/index.html'));
   File mainFile = File(p.join(projectPath, 'lib/main.dart'));
   File controllerFile = File(p.join(projectPath, 'lib/controllers/root_controller.dart'));
   File routesFile = File(p.join(projectPath, 'lib/routes/routes.dart'));
-  File pubsecFile = File(p.join(projectPath, 'pubsec.yaml'));
+  File pubspecFile = File(p.join(projectPath, 'pubspec.yaml'));
   File analysisFile = File(p.join(projectPath, 'analysis_options.yaml'));
   File userFile = File(p.join(projectPath, 'lib/orm/user.dart'));
   File ormsFile = File(p.join(projectPath, 'lib/orm/orms.dart'));
@@ -58,7 +60,7 @@ Future<void> createProject(String name) async {
   await mainFile.create();
   await controllerFile.create();
   await routesFile.create();
-  await pubsecFile.create();
+  await pubspecFile.create();
   await analysisFile.create();
   await userFile.create();
   await ormsFile.create();
@@ -68,7 +70,7 @@ Future<void> createProject(String name) async {
   await mainFile.writeAsString(mainFileContent);
   await controllerFile.writeAsString(controllerFileContent);
   await routesFile.writeAsString(routesFileContent);
-  await pubsecFile.writeAsString(pubsecFileContent);
+  await pubspecFile.writeAsString(pubspecFileContent);
   await analysisFile.writeAsString(analysisFileContent);
   await userFile.writeAsString(userFileContent);
   await ormsFile.writeAsString(ormsFileContent);

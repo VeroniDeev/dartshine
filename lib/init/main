@@ -1,6 +1,6 @@
 import 'package:dartshine/dartshine.dart';
-import 'routes/routes.dart';
-import 'orm/orms.dart';
+import 'package:{}/routes/routes.dart';
+import 'package:{}/orm/orms.dart';
 
 void main() {
   Server server = Server(routes: Routes(), orms: Orms());

@@ -1,5 +1,5 @@
 import 'package:dartshine/dartshine.dart';
-import 'user.dart';
+import 'package:{}/orm/user.dart';
 
 class Orms extends DartshineOrm{
   @override

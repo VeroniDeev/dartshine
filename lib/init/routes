@@ -1,5 +1,5 @@
 import 'package:dartshine/dartshine.dart';
-import '../controllers/root_controller.dart';
+import 'package:{}/controllers/root_controller.dart';
 
 class Routes extends DartshineRoute {
   @override
