@@ -1,39 +1,51 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+# Dartshine
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
+Dartshine is a web framework that aims to provide a clear, clean syntax, making web development in Dart more intuitive and efficient.
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Getting Started](#getting-started)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Simple and clean syntax
+- Support for SQLite database
+- Easy routing
+- Static file serving
 
-## Getting started
+## Installation
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+To install Dartshine, you need to have Dart SDK installed. You can then add Dartshine as a global package:
 
-## Usage
+```sh
+dart pub global activate dartshine
+```
+## Getting Started
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-
-```dart
-const like = 'sample';
+### Create a project
+Then you can create a project with the following command:
+```sh
+dartshine create <project>
 ```
 
-## Additional information
+### Run the project
+To run the project you need to run the following command:
+```sh
+dart run
+```
+The base port is 8000
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+## Documentation
+The documentation is under construction.
+
+## Contributing
+Contributions are welcome! Feel free to open issues or send pull requests.
+
+## License
+This project is licensed under MIT. See the  [LICENSE](https://github.com/VeroniDeev/webchaussette/blob/main/LICENSE)  file for more details
